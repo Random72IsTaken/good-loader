@@ -12,6 +12,8 @@ When you load the site, if JavaScript is already loaded, the package's loader vi
 
 Otherwise, a customizable **`sentence`** loads along the view, as soon as your specified **`font`** is loaded; after CSS; and for a predefined **`minimum`** duration as well, before finally fading all out.
 
+https://user-images.githubusercontent.com/81492351/179066243-16001c9c-330a-4ac7-a020-0e6d1adcc7c6.mp4
+
 
 ## Installation
 
