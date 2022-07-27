@@ -12,6 +12,8 @@ When you load the site, if JavaScript is already loaded, the package's loader vi
 
 Otherwise, a customizable **`sentence`** loads along the view, as soon as your specified **`font`** is loaded; after CSS; and for a predefined **`minimum`** duration as well, before finally fading all out.
 
+The result is something like this:
+
 https://user-images.githubusercontent.com/81492351/179066243-16001c9c-330a-4ac7-a020-0e6d1adcc7c6.mp4
 
 
@@ -43,9 +45,6 @@ This package is built for the [TALL stack](https://tallstack.dev). You must acco
 
 3. Open the published `config/good-loader.php` file and specify your `font` name.
 
-   - > **Warning**
-     > If that `font` is not set up and loaded in the view, **the loading will be just a cute little infinite**! 😅
-
    - <details>
        <summary>
          Here are the <b>default</b> configurations of the file.
@@ -54,24 +53,11 @@ This package is built for the [TALL stack](https://tallstack.dev). You must acco
      ```php
      /*
       |--------------------------------------------------------------------------
-      | Loading Sentence
-      |--------------------------------------------------------------------------
-      |
-      | Customize the sentence which shows up at the center of the screen before
-      | JavaScript is completely loaded.
-      |
-      */
-
-     'sentence' => env('GOOD_LOADER_SENTENCE', 'Loading...'),
-
-
-     /*
-      |--------------------------------------------------------------------------
       | Loading Font
       |--------------------------------------------------------------------------
       |
       | Provide the name of the font you're using, so that the sentence won't
-      | load until that font is loaded at least; after CSS.
+      | load until that font is loaded at least.
       |
       */
 
@@ -80,46 +66,79 @@ This package is built for the [TALL stack](https://tallstack.dev). You must acco
 
      /*
       |--------------------------------------------------------------------------
-      | Loading Duration
+      | Loading Sentence
       |--------------------------------------------------------------------------
       |
-      | The minimum time it takes to keep the background whilst `loading`, even
-      | after the Javascript is completely loaded.
-      |
-      | And the least duration it takes for the `sentence` to stay visible when
-      | it gets displayed.
+      | Customize the sentence which shows up at the center of the screen before
+      | the page is completely loaded.
       |
       */
 
-     'duration' => [
-         'loading' => env('GOOD_LOADER_LOADING_DURATION', 500),
-         'sentence' => env('GOOD_LOADER_SENTENCE_DURATION', 750),
+     'sentence' => env('GOOD_LOADER_SENTENCE', 'Loading...'),
+
+
+     /*
+      |--------------------------------------------------------------------------
+      | Loading Transitions
+      |--------------------------------------------------------------------------
+      |
+      | The time it takes to transition (fade) the `background` and the `sentence`.
+      |
+      */
+
+     'transitions' => [
+         'background' => env('GOOD_LOADER_TRANSITIONS_BACKGROUND', 1000),
+         'sentence' => env('GOOD_LOADER_TRANSITIONS_SENTENCE', 300),
+     ],
+
+
+     /*
+      |--------------------------------------------------------------------------
+      | Loading Durations
+      |--------------------------------------------------------------------------
+      |
+      | The time it takes for the `sentence` to start `animating`, as things are
+      | still not loaded...
+      |
+      */
+
+     'durations' => [
+         'sentence-animating' => env('GOOD_LOADER_DURATIONS_SENTENCE_ANIMATING', 750),
      ],
      ```
      </details>
 
-4. Add the following Blade directive to your `master` layout or view:
-
-   ```html
-   <body>
-       @goodLoader
-       ...
-   </body>
-   ```
-
-5. Ensure that your `content` in the `tailwind.config.js` file include the published view:
+4. Ensure that your `content` in the `tailwind.config.js` file include the published view - along your font:
 
    ```js
+   const defaultTheme = require('tailwindcss/defaultTheme');
+
    module.exports = {
        content: [
            ...
            './resources/views/**/*.blade.php', // or to './resources/views/vendor/good-loader/**' specifically...
        ],
        ...
-   }
+       theme: {
+           extend: {
+               fontFamily: {
+                   mulish: ['Mulish', ...defaultTheme.fontFamily.sans],
+                   ...
    ```
 
    - The view is available at `resources/views/vendor/good-loader/partials/good-loader.blade.php` for customization.
+
+5. Add the following Blade directive to your `master` layout or view - along the font:
+
+   ```html
+       ...
+       <link rel="prefetch"
+             href="https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900">
+   </head>
+   <body class="font-mulish">
+       @goodLoader
+       ...
+   ```
 
 6. Finally, compile Alpine in `app.js` and the view's Tailwind classes in `app.css` with NPM:
 
@@ -136,8 +155,7 @@ Feel free to **p**ull-**r**equest at any time. It's not like the package is movi
 
 ### TODOs
 
-- Find a better way to await font loading... That `while` loop scares me! 👀
-- Integrate Spatie's [google-fonts](https://github.com/spatie/laravel-google-fonts) package as a required one.
+- Provide more time customizations.
 - Neat background grids to pick from!
 - Write [Cypress](https://cypress.io) and [Pest](https://pestphp.com/) tests! 🥲
 

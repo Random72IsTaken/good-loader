@@ -1,57 +1,52 @@
-<!-- Loader -->
-<div
-    x-data="{ shown: true }"
-    x-show="shown"
-    x-init="$nextTick(() => {
-        const $element = $el.children[0];
+<!-- Good Loader -->
+<div class="fixed z-[99] grid h-full w-full items-center bg-white transition-opacity"
+     style="transition-duration: {{ config('good-loader.transitions.background') }}ms;"
+     x-data="{}"
+     x-init="$nextTick(() => {
+         clearTimeout(window.goodLoader);
 
-        if (!$element.classList.contains('opacity-0')) {
-            $element.classList.add('prevent-pulsing');
-            $element.classList.remove('animate-pulse');
-            setTimeout(() => $element.classList.add('opacity-0'), {{ config('good-loader.duration.sentence') }});
+         const $sentence = document.getElementById('good-loader-sentence');
 
-            setTimeout(
-                () => shown = false,
-                {{ config('good-loader.duration.sentence') }} + {{ config('good-loader.duration.loading') }}
-            );
-        } else {
-            setTimeout(
-                () => shown = false,
-                {{ config('good-loader.duration.loading') }}
-            );
-        }
-    })"
-    x-transition:leave="transition ease-in duration-300"
-    x-transition:leave-start="opacity-100"
-    x-transition:leave-end="opacity-0"
-    class="fixed z-[99] grid h-full w-full items-center justify-center bg-white"
->
-    <p
-        id="good-loader-sentence"
-        class="text-xl opacity-0 transition-all duration-[300ms]"
-    >
-        {{ config('good-loader.sentence', 'Loading...') }}
-    </p>
-</div>
+         $sentence.classList.add('prevent-animating');
+         $sentence.classList.add('opacity-0');
+         $el.classList.add('opacity-0');
+     });">
+    <!-- Background -->
+    <div id="good-loader-background"
+         class="fixed z-[98] h-full w-full bg-white transition-opacity"
+         style="transition-duration: {{ config('good-loader.transitions.sentence') }}ms;">
+    </div>
 
-<!-- Script -->
-<script defer>
-    // ? Shows the loader sentence only when the font is loaded at least
-    document.fonts.ready.then(function() {
-        while (!document.fonts.check("1.25rem '{{ config('good-loader.font') }}'")) {}
+    <!-- Sentence -->
+    <div id="good-loader-sentence"
+         class="text-center text-xl opacity-0 transition-opacity"
+         style="transition-duration: {{ config('good-loader.transitions.sentence') }}ms;">
+        {{ config('good-loader.sentence') }}
+    </div>
 
+    <!-- Script -->
+    <script>
         setTimeout(() => {
-            if (document.readyState !== 'complete') {
-                const $element = document.getElementById('good-loader-sentence');
+            document.fonts.load('1.25rem "{{ config('good-loader.font') }}"').then(() => {
+                window.goodLoader = setTimeout(() => {
+                    if (document.readyState !== 'complete') {
+                        const $background = document.getElementById('good-loader-background');
+                        const $sentence = document.getElementById('good-loader-sentence');
 
-                $element.classList.remove('opacity-0');
+                        $background.classList.add('opacity-0');
 
-                setTimeout(() => {
-                    if (!$element.classList.contains('prevent-pulsing')) {
-                        $element.classList.add('animate-pulse');
+                        setTimeout(() => {
+                            $sentence.classList.remove('opacity-0');
+                        }, {{ config('good-loader.transitions.sentence') }});
+
+                        setTimeout(() => {
+                            if (!$sentence.classList.contains('prevent-animating')) {
+                                $sentence.classList.add('animate-pulse');
+                            }
+                        }, {{ config('good-loader.durations.sentence-animating') }});
                     }
-                }, 700);
-            }
-        }, {{ config('good-loader.duration.sentence') }});
-    });
-</script>
+                }, 750);
+            });
+        }, 0);
+    </script>
+</div>

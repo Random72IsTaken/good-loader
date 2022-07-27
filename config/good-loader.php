@@ -4,24 +4,11 @@ return [
 
     /*
      |--------------------------------------------------------------------------
-     | Loading Sentence
-     |--------------------------------------------------------------------------
-     |
-     | Customize the sentence which shows up at the center of the screen before
-     | JavaScript is completely loaded.
-     |
-     */
-
-    'sentence' => env('GOOD_LOADER_SENTENCE', 'Loading...'),
-
-
-    /*
-     |--------------------------------------------------------------------------
      | Loading Font
      |--------------------------------------------------------------------------
      |
      | Provide the name of the font you're using, so that the sentence won't
-     | load until that font is loaded at least; after CSS.
+     | load until that font is loaded at least.
      |
      */
 
@@ -30,20 +17,44 @@ return [
 
     /*
      |--------------------------------------------------------------------------
-     | Loading Duration
+     | Loading Sentence
      |--------------------------------------------------------------------------
      |
-     | The minimum time it takes to keep the background whilst `loading`, even
-     | after the Javascript is completely loaded.
-     |
-     | And the least duration it takes for the `sentence` to stay visible when
-     | it gets displayed.
+     | Customize the sentence which shows up at the center of the screen before
+     | the page is completely loaded.
      |
      */
 
-    'duration' => [
-        'loading' => env('GOOD_LOADER_LOADING_DURATION', 500),
-        'sentence' => env('GOOD_LOADER_SENTENCE_DURATION', 750),
+    'sentence' => env('GOOD_LOADER_SENTENCE', 'Loading...'),
+
+
+    /*
+     |--------------------------------------------------------------------------
+     | Loading Transitions
+     |--------------------------------------------------------------------------
+     |
+     | The time it takes to transition (fade) the `background` and the `sentence`.
+     |
+     */
+
+    'transitions' => [
+        'background' => env('GOOD_LOADER_TRANSITIONS_BACKGROUND', 1000),
+        'sentence' => env('GOOD_LOADER_TRANSITIONS_SENTENCE', 300),
+    ],
+
+
+    /*
+     |--------------------------------------------------------------------------
+     | Loading Durations
+     |--------------------------------------------------------------------------
+     |
+     | The time it takes for the `sentence` to start `animating`, as things are
+     | still not loaded...
+     |
+     */
+
+    'durations' => [
+        'sentence-animating' => env('GOOD_LOADER_DURATIONS_SENTENCE_ANIMATING', 750),
     ],
 
 ];
