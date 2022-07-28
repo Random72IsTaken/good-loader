@@ -9,7 +9,12 @@
 
          $sentence.classList.add('prevent-animating');
          $sentence.classList.add('opacity-0');
+
          $el.classList.add('opacity-0');
+
+         setTimeout(() => {
+            $el.classList.add('invisible');
+         }, {{ config('good-loader.transitions.background') }});
      });">
     <!-- Background -->
     <div id="good-loader-background"
