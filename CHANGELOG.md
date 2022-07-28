@@ -2,6 +2,10 @@
 
 All notable changes to `good-loader` will be documented in this file.
 
+## Hotfix v1.1.1 - 2022-07-28
+
+**Full Changelog**: https://github.com/GoodM4ven/good-loader/compare/v1.1.0...v1.1.1
+
 ## Release v1.1.0 - 2022-07-27
 
 ### What's Changed
