@@ -8,9 +8,9 @@ Display an elegant loader for your TALL Stack application.
 
 ### Description
 
-When you load the site, if JavaScript is already loaded, the package's loader view beautifully fades out after a specified **`duration`**...
+When you load the site, and the page is already loaded, the package's loader view beautifully fades out in a specified `transition` time...
 
-Otherwise, a customizable **`sentence`** loads along the view, as soon as your specified **`font`** is loaded; after CSS; and for a predefined **`minimum`** duration as well, before finally fading all out.
+Otherwise, a customizable **`sentence`** loads along the view, as soon as your specified **`font`** is loaded; and until the page is ready; before everything fading all out in the end.
 
 The result is something like this:
 
